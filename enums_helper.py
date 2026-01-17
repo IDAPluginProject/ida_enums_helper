@@ -21,8 +21,14 @@ class EnumChooser(idaapi.Choose):
             title,
             cols=[
                 ["#name of the enum#Enumeration", idaapi.Choose.CHCOL_PLAIN | 30],
-                ["#Matching members already present in the enum#Members", idaapi.Choose.CHCOL_PLAIN | 20],
-                ["#List of numbers that will be added to the enum#Missing", idaapi.Choose.CHCOL_PLAIN | 30],
+                [
+                    "#Matching members already present in the enum#Members",
+                    idaapi.Choose.CHCOL_PLAIN | 20,
+                ],
+                [
+                    "#List of numbers that will be added to the enum#Missing",
+                    idaapi.Choose.CHCOL_PLAIN | 30,
+                ],
                 ["#number of matching members#matching", idaapi.Choose.CHCOL_DEC | 5],
                 ["#number of missing members#missing", idaapi.Choose.CHCOL_DEC | 5],
             ],
@@ -37,7 +43,10 @@ class EnumChooser(idaapi.Choose):
             if not idaapi.is_type_choosable(None, i):  # type: ignore
                 continue
 
-            t = idaapi.tinfo_t(ordinal=i)
+            try:
+                t = idaapi.tinfo_t(ordinal=i)
+            except ValueError:
+                continue
             if not t.is_enum():
                 continue
             name = t.get_type_name()
@@ -59,7 +68,9 @@ class EnumChooser(idaapi.Choose):
             members_str = ", ".join(members)
             missing_str = ", ".join(missing)
 
-            enums.append((name, members_str, missing_str, str(len(members)), str(len(missing))))
+            enums.append(
+                (name, members_str, missing_str, str(len(members)), str(len(missing)))
+            )
         return enums
 
     def OnGetSize(self):
@@ -237,6 +248,14 @@ def is_number(ctx: idaapi.action_ctx_base_t):
         return idaapi.AST_DISABLE
 
     vu.get_current_item(idaapi.USE_KEYBOARD)
+
+    logger.debug("item", vu.item.citype)
+    if vu.item.citype == idaapi.VDI_EXPR:
+        logger.debug(f"{vu.item.it.ea=:#x} {vu.item.it.to_specific_type.opname}")  # type: ignore
+    logger.debug("tail", vu.tail.dstr())
+    logger.debug("tail.citype", vu.tail.citype)
+    if vu.tail.citype == idaapi.VDI_TAIL:
+        logger.debug(f"{vu.tail.loc.ea=:#x} {vu.tail.loc.itp=:#x}")
 
     if not vu.item.is_citem():
         return idaapi.AST_DISABLE
@@ -451,11 +470,11 @@ class EnumsHelperPlugin(idaapi.plugin_t):
         load_last_enum_used()
 
         addon = idaapi.addon_info_t()
-        addon.id = "milankovo.enums_helper"
-        addon.name = "enums helper"
-        addon.producer = "Milánek"
+        addon.id = "milankovo.ida-enums-helper"
+        addon.name = "IDA Enums Helper"
+        addon.producer = "Milankovo"
         addon.url = "https://github.com/milankovo/ida_enums_helper"
-        addon.version = "1.0.0"
+        addon.version = "1.0.1"
         idaapi.register_addon(addon)
 
         base_action_handler_t.register_actions()

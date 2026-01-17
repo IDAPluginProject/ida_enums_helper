@@ -1,12 +1,36 @@
 {
     "IDAMetadataDescriptorVersion": 1,
     "plugin": {
-        "name": "IDA Enums helper",
+        "name": "ida-enums-helper",
         "entryPoint": "enums_helper.py",
-        "description": "A plugin to with enums members from pseudocode view.",
-        "categories": ["ui-ux-and-visualization"],
+        "description": "A plugin to work with enums members from pseudocode view.",
+        "license": "MIT",
+        "categories": [
+            "ui-ux-and-visualization"
+        ],
         "idaVersions": ">=9.2",
-        "version": "1.0.0",
-        "logoPath": "logo.jpg"
+        "platforms": [
+            "windows-x86_64",
+            "linux-x86_64",
+            "macos-x86_64",
+            "macos-aarch64"
+        ],
+        "version": "1.0.1",
+        "logoPath": "logo.jpg",
+        "keywords": [
+            "enums",
+            "pseudocode",
+            "decompiler",
+            "hexrays"
+        ],
+        "urls": {
+            "repository": "https://github.com/milankovo/ida_enums_helper"
+        },
+        "authors": [
+            {
+                "name": "Milankovo",
+                "email": "ida_enums_helper@noreply.github.com"
+            }
+        ]
     }
 }
