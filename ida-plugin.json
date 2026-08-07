@@ -3,7 +3,7 @@
     "plugin": {
         "name": "ida-enums-helper",
         "entryPoint": "enums_helper.py",
-        "description": "A plugin to work with enums members from pseudocode view.",
+        "description": "A plugin to work with enum members from the pseudocode view: collects the constants of a whole variable group, names them in one go, and retypes the group to the enum.",
         "license": "MIT",
         "categories": [
             "ui-ux-and-visualization"
@@ -15,7 +15,7 @@
             "macos-x86_64",
             "macos-aarch64"
         ],
-        "version": "1.0.1",
+        "version": "1.1.0",
         "logoPath": "logo.jpg",
         "keywords": [
             "enums",
